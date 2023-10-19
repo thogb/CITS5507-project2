@@ -52,8 +52,20 @@ FishLake* fish_lake_new(
     fishLake->coord_min_y = -half_height;
     fishLake->coord_max_y = half_height;
 
+    return fishLake;
+}
+
+/**
+ * Initializes the fishes in a FishLake object. Each files gets a random 
+ * position and weight.
+ *
+ * @param fishLake a pointer to the FishLake object containing the fishes
+ *
+ * @return void
+ */
+void fish_lake_init_fishes(FishLake* fishLake) {
     // give each fish a random coordinate
-    for (int i = 0; i < fish_amount; i++) {
+    for (int i = 0; i < fishLake->fish_amount; i++) {
         Position pos = {
             rand_float(
             fishLake->coord_min_x,
@@ -66,8 +78,6 @@ FishLake* fish_lake_new(
         // initialise the fish, also sets a random weight
         fish_init(&(fishLake->fishes[i]), pos);
     }
-
-    return fishLake;
 }
 
 /**
