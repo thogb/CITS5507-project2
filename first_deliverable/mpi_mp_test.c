@@ -7,6 +7,7 @@
  * 
  * @author Tao Hu
  */
+
 #include <stdio.h>
 #include <mpi.h>
 
@@ -93,8 +94,7 @@ int main(int argc, char *argv[])
 
     // Intialise the local fish lake based on the parition size of each process
     localFishLake = fish_lake_new(
-        // workParition->size, 
-        500,
+        workParition->size, 
         FISH_LAKE_WIDTH, 
         FISH_LAKE_HEIGHT);
 

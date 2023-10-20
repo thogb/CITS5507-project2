@@ -1,13 +1,15 @@
 /**
  * @file mpi_mp_test.c
  * 
- * Perform a simple message passing of a list of the fish structures. Two output
- *  files are created one after fish intialisation and one after receiving data 
- * from worker processes.
+ * Performs the simplified version of the fish school search simulation. The 
+ * simulation will be ran on multiple processes using MPI for message passing. 
+ * Each process will also be ran using multiple threads using OMP.
  * 
  * @author Tao Hu
  */
+
 #include <stdio.h>
+#include <time.h>
 #include <mpi.h>
 #include <omp.h>
 
@@ -16,6 +18,7 @@
 #include "../lib/work_parition.h"
 #include "../lib/mpi_util.h"
 
+#define SIMULATION_STEPS 100
 #define FISH_LAKE_WIDTH 200.0f
 #define FISH_LAKE_HEIGHT 200.0f
 
@@ -44,12 +47,26 @@ int main(int argc, char *argv[])
     Fish* allFishes;
     WorkPartition* workPartition;
 
-    int fishAmount = atio(argv[1]);
-    int simulationSteps = simulationSteps;
+    // The global amount of fishes
+    int fishAmount = atoi(argv[1]);
+    // Number of times the simulation will run
+    int simulationSteps = SIMULATION_STEPS;
+    // The seed to be used
     unsigned int randSeed = time(NULL);
+    // Start time of simulation
     double start;
-    int barycentre;
+    // End time of simulation
+    double end;
+    // Duration of the simulation
+    double elapsed_secs;
+    // The final calculated barycentre
+    float barycentre;
+    // Used for easier access, instead of using localLake->fishes
     Fish* fishes;
+    // Used by OMP to calculated the local objective value
+    float objectiveValue;
+    // Used by OMP to calculate the local sum of distance * weight
+    float sumOfDistWeight;
 
     // dfo = distance from the origin
     // The barycentre equation is the sum of dfo times weight divided by 
@@ -113,9 +130,10 @@ int main(int argc, char *argv[])
         fish_lake_init_fishes(fishLake);
         printf("Initialised the fish lake\n");
 
-        start = omp_get_wtime();
     }
 
+    printf("Process %d is running with %d thread\n", pRank, omp_get_max_threads());
+    start = omp_get_wtime();
     // Create the work parition information
     workPartition = work_parition_new(wSize, fishAmount, pRank);
     if (pRank == MASTER_RANK) {
@@ -128,8 +146,7 @@ int main(int argc, char *argv[])
 
     // Intialise the local fish lake based on the parition size of each process
     localFishLake = fish_lake_new(
-        // workPartition->size, 
-        500,
+        workPartition->size, 
         FISH_LAKE_WIDTH, 
         FISH_LAKE_HEIGHT);
 
@@ -152,6 +169,8 @@ int main(int argc, char *argv[])
     );
 
     fishes = localFishLake->fishes;
+    // Just making sure every process also gets differnt seed.
+    randSeed += 500 * pRank;
 
     // === Start of simulation ===
 
@@ -159,14 +178,15 @@ int main(int argc, char *argv[])
     // But before this, fish are all initialised with random weight and position 
     for (int i = 0; i < simulationSteps; i++)
     {
-        localBarycenterVals[1] = 0;
-        localBarycenterVals[2] = 0;
+        objectiveValue = 0;
+        sumOfDistWeight = 0;
+        localMaxDeltaf = INT32_MIN;
 
         // calc the value of objective function
         #pragma omp parallel for schedule(S_METHOD) reduction(+: objectiveValue)
         for (int i = 0; i < workPartition->size; i++)
         {
-            localBarycenterVals[1] += fishes[i].distanceFromOrigin;
+            objectiveValue += fishes[i].distanceFromOrigin;
         }
 
         // calculate barycenter of the fish school. In the real simulation I am 
@@ -178,8 +198,11 @@ int main(int argc, char *argv[])
         #pragma omp parallel for schedule(S_METHOD) reduction(+: sumOfDistWeight)
         for (int i = 0; i < workPartition->size; i++)
         {
-            localBarycenterVals[0] += fishes[i].distanceFromOrigin * fishes[i].weight;
+            sumOfDistWeight += fishes[i].distanceFromOrigin * fishes[i].weight;
         }
+
+        localBarycenterVals[0] = sumOfDistWeight;
+        localBarycenterVals[1] = objectiveValue;
 
         // The barycentre can only be calculated if all the values are available
         //  This is a summation problem, so the MPI_Allreduce can be used.
@@ -204,12 +227,12 @@ int main(int argc, char *argv[])
                 // The fish will swim and keep track of the old position, which is
                 // used to calculate delta f (the change in objective function).
                 // Each fish also stores a deltaF maxDeltaF is updated.
-                float deltaF = fish_lake_fish_swim(fishLake, &(fishes[j]), &randSeed);
+                float deltaF = fish_lake_fish_swim(localFishLake, &(fishes[j]), &randSeed);
             }
         }
 
         // calculate maxDeltaF
-        #pragma omp parallel for schedule(S_METHOD) reduction(max: maxDeltaF)
+        #pragma omp parallel for schedule(S_METHOD) reduction(max: localMaxDeltaf)
         for (int i = 0; i < workPartition->size; i++)
         {
             localMaxDeltaf = max_float(localMaxDeltaf, fishes[i].deltaF);
@@ -234,12 +257,12 @@ int main(int argc, char *argv[])
     }
 
     // === End of simulation ===
-
-    if (pRank = MASTER_RANK) {
-        double end = omp_get_wtime();
-        double elapsed_secs = end - start;
+    end = omp_get_wtime();
+    elapsed_secs = end - start;
+    if (pRank == MASTER_RANK) {
         printf("omp_get_max_threads=%d, schedule=%s, time_taken=%f\n", 
             omp_get_max_threads(), S_METHOD_STR, elapsed_secs);
+
     }
     
     // Gatherv would allow the master process to gather the data back
