@@ -49,6 +49,7 @@ int main(int argc, char *argv[])
     // Substitution for fishlake->fishes, the worker processes do not intialise 
     // fishLake. Hence no access to fishLake->fishes when using Gatherv
     Fish* allFishes;
+
     int pRank;
     int wSize;
     WorkPartition* workParition;
@@ -149,10 +150,11 @@ int main(int argc, char *argv[])
     if (pRank == MASTER_RANK) {
         printf("Recieved data back from woker processes");
         write_fish_positions("out2.txt", fishLake);
-        printf("Wrote same output to out2.txt\n");
+        printf("Wrote output to out2.txt\n");
     }
 
     // === Clean ups by freeing up all memores ===
+
     // Master process free all fishes
     if (pRank == MASTER_RANK) {
         fish_lake_free(fishLake);
@@ -164,5 +166,6 @@ int main(int argc, char *argv[])
     //MPI gives warning for not freeing commited types
     mpi_util_free_all_types();    
     MPI_Finalize();
+    
     return 0;
 }
