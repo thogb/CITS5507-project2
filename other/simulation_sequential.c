@@ -9,8 +9,8 @@
 
 #include <time.h>
 #include <stdio.h>
-#include "fish_lake.h"
-#include "sim_util.h"
+#include "../lib/fish_lake.h"
+#include "../lib/sim_util.h"
 
 #define SIMULATION_STEPS 100
 // #define FISH_AMOUNT 100000

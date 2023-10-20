@@ -15,6 +15,7 @@
 
 #include "../lib/fish_lake.h"
 #include "../lib/sim_util.h"
+#include "../lib/work_parition.h"
 
 // Define odd number of fishes to test the edge case
 #define FISH_AMOUNT 3153
@@ -33,15 +34,22 @@ static void write_fish_positions( char* filename, FishLake* fishLake) {
     fclose(file);
 }
 
-int main(int argc, char const *argv[])
+int main(int argc, char *argv[])
 {
     FishLake* fishLake;
+    FishLake* localFishLake;
     int pRank;
     int wSize;
+    WorkPartition* workParition;
 
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &pRank);
     MPI_Comm_size(MPI_COMM_WORLD, &wSize);
+
+    if (wSize < 2) {
+        printf("Program requires at least 2 processes\n");
+        return 1;
+    }
     
     // The master process intialises all the fishes.
     if (pRank == MASTER_RANK) {
@@ -49,16 +57,44 @@ int main(int argc, char const *argv[])
         FISH_AMOUNT, 
         FISH_LAKE_WIDTH, 
         FISH_LAKE_HEIGHT);
+        printf("Program running with %d processes\n", wSize);
         fish_lake_init_fishes(fishLake);
+        printf("Initialised the fish lake\n");
         // Write the fish position to out1.txt
         write_fish_positions("out1.txt", fishLake);
-        printf("Program running on %d processes\n", wSize);
+        printf("Wrote the fish positions to out1.txt\n");
+        // Clear the posistion of the fishes for corrrect validation later on
+        for (int i = 0; i < fishLake->fish_amount; i++)
+        {
+            fishLake->fishes[i].position.x = 0.0f;
+            fishLake->fishes[i].position.y = 0.0f;
+        }
+        printf("Cleared the position of the fishes\n");
     }
+
+    // Create the work parition information
+    workParition = work_parition_new(wSize, FISH_AMOUNT, pRank);
+    if (pRank == MASTER_RANK) {
+        for (int i = 0; i < workParition->paritionCount; i++)
+        {
+            printf("Process %d is assigned workload of %d fishes with offset "
+            "of %d\n", i, workParition->sizes[i], workParition->offsets[i]);
+        }
+    }
+
+    // Intialise the local fish lake based on the parition size of each process
+    localFishLake = fish_lake_new(
+        workParition->size, 
+        FISH_LAKE_WIDTH, 
+        FISH_LAKE_HEIGHT);
 
     // Master process free all fishes
     if (pRank == MASTER_RANK) {
         fish_lake_free(fishLake);
     }
+
+    work_parition_free(workParition);
+    fish_lake_free(localFishLake);
 
     MPI_Finalize();
     return 0;
