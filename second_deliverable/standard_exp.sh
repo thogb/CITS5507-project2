@@ -1,18 +1,16 @@
 #!/bin/sh
 
 #SBATCH --account=courses0101
-
 #SBATCH --partition=debug
-
-#SBATCH --ntasks=1
-
+#SBATCH --ntasks=4
 #SBATCH --ntasks-per-node=1
-
 #SBATCH --cpus-per-task=128
-
+#SBATCH --mem-per-cpu=16G
 #SBATCH --time=00:10:00
 
-module load gcc
+module load openmpi/4.0.5
+
+# Retrieved from project 1 and modified.
 
 FISH_AMOUNT=1000
 GCC_LIB_LINK='-lm'
@@ -40,7 +38,7 @@ function run_simulation {
 function run_experiment {
     GCC_OPTIONS="${GCC_LIB_LINK} -D $1"
 
-    gcc $GCC_OPTIONS -fopenmp simulation_parallel.c -o simulation_parallel
+    mpicc $GCC_OPTIONS -fopenmp simulation_parallel.c -o simulation_parallel
 
     echo "Running experiment: FISH_AMOUNT=${FISH_AMOUNT}, schedule=$1"
 
@@ -55,13 +53,6 @@ function run_experiment {
 }
 
 touch $OUT_FILE
-
-# Run the experiment
-# Compile sequential
-gcc $GCC_OPTIONS simulation_sequential.c -o simulation_sequential
-
-# Run sequential
-srun -c 1 simulation_sequential $FISH_AMOUNT >> $OUT_FILE
 
 # Run the experiment with static schedule
 run_experiment S_STATIC

@@ -3,6 +3,8 @@
  * 
  * Contains helping functions that will be commonly used in this project
  * 
+ * Retrieved from the project 1.
+ * 
  * @author Tao Hu
 */
 

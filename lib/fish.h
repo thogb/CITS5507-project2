@@ -3,6 +3,8 @@
  * 
  * Contains the struct definition of type Fish.
  * 
+ * Retrieved from the project 1.
+ * 
  * @author Tao Hu
 */
 

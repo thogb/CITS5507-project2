@@ -2,7 +2,7 @@
  * @file work_parition.h
  * 
  * Contains struct definition to store the data on workload paritioned between 
- * all processes.
+ * given processes.
  * 
  * @author Tao Hu
 */
@@ -26,8 +26,6 @@ typedef struct workParition
     int paritionCount;
     // The sum of all size, representing the work to be partitioned
     int totalSize;
-    // The max possible allocated size to a process. Used to intialise work
-    int maxSize;
     // The rank or id of the process using this work parition
     int rank;
     // The offset for this procecss
@@ -54,6 +52,7 @@ WorkPartition* work_parition_new(
     int currOffset = 0;
 
     WorkPartition* workParition = (WorkPartition*)malloc(sizeof(WorkPartition));
+
     workParition->offsets = (int*)malloc(sizeof(int) * partitionCount);
     workParition->sizes = (int*)malloc(sizeof(int) * partitionCount);
     workParition->paritionCount = partitionCount;
@@ -75,10 +74,10 @@ WorkPartition* work_parition_new(
     }
 
     // Fill the information that is specific to the subject worker/process
-    workParition->maxSize = size + 1;
     workParition->rank = rank;
     workParition->offset = workParition->offsets[rank];
     workParition->size = workParition->sizes[rank];
+    
     return workParition;
 }
 

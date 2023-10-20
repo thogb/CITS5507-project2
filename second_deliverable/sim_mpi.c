@@ -5,6 +5,8 @@
  * simulation will be ran on multiple processes using MPI for message passing. 
  * Each process will also be ran using multiple threads using OMP.
  * 
+ * Retrieved from project 1 and modified.
+ * 
  * @author Tao Hu
  */
 
@@ -154,7 +156,7 @@ int main(int argc, char *argv[])
     // cause memory segmentation fault.
     if (pRank == MASTER_RANK) allFishes = fishLake->fishes;
     
-    // Scatterv is used to send uneven amount of partition data to different 
+    // Scatterv is used to send uneven amount of partitioned data to different 
     // worker processes
     MPI_Scatterv(
         allFishes,
@@ -169,7 +171,7 @@ int main(int argc, char *argv[])
     );
 
     fishes = localFishLake->fishes;
-    // Just making sure every process also gets differnt seed.
+    // Just making sure every process gets a different seed.
     randSeed += 500 * pRank;
 
     // === Start of simulation ===
@@ -201,6 +203,7 @@ int main(int argc, char *argv[])
             sumOfDistWeight += fishes[i].distanceFromOrigin * fishes[i].weight;
         }
 
+        // Prepare for message passing by storing in localBarycenterVals.
         localBarycenterVals[0] = sumOfDistWeight;
         localBarycenterVals[1] = objectiveValue;
 
@@ -259,10 +262,10 @@ int main(int argc, char *argv[])
     // === End of simulation ===
     end = omp_get_wtime();
     elapsed_secs = end - start;
+
     if (pRank == MASTER_RANK) {
         printf("omp_get_max_threads=%d, schedule=%s, time_taken=%f\n", 
             omp_get_max_threads(), S_METHOD_STR, elapsed_secs);
-
     }
     
     // Gatherv would allow the master process to gather the data back

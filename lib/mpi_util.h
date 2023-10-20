@@ -1,7 +1,7 @@
 /**
  * @file mpi_util.h
  * 
- * Contains custom struct definitions and functions to asssit use of MPI
+ * Contains functions that is used to assist the use of MPI in this project.
  * 
  * @author Tao Hu
 */

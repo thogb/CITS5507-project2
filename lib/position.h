@@ -4,6 +4,8 @@
  * Contains struct definition of type Position and function to modify position
  * pointers.
  * 
+ * Retrieved from the project 1.
+ * 
  * @author Tao Hu
 */
 

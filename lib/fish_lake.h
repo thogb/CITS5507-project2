@@ -4,6 +4,10 @@
  * Contains the struct definition of type FishLake and functions to create, 
  * modify and free from heap.
  * 
+ * Retrieved from the project 1.
+ * Modifications made: Split the fish_lake_new function into fish_lake_new and 
+ * fish_lake_init
+ * 
  * @author Tao Hu
 */
 
