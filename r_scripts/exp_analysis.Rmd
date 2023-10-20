@@ -1,0 +1,80 @@
+---
+title: "CITS5507 - Project 1 experiment analysis"
+author: "<i>Tao HU</i> (23805764)"
+date: "2023-09-25"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+library(ggplot2)
+```
+
+## Plot fish function
+```{r fig.width=12, fig.height=8}
+plot_exp_data <- function(fish_amount) {
+  exp_data <- read.csv(sprintf("exp_data/exp_%d.csv", fish_amount))
+  exp_data[, 'thread_num'] <- factor(exp_data[, 'thread_num'])
+  
+  ggplot(data = exp_data, aes(x=thread_num, y=duration, fill=schedule)) +
+    geom_bar(position="dodge", stat="identity",) +
+    
+  ggtitle(sprintf("Simulation with %d fish and 100 steps", fish_amount))
+}
+```
+
+## 10000 fish
+```{r fig.width=12, fig.height=8}
+plot_exp_data(10000)
+```
+
+## 50000 fish
+```{r fig.width=12, fig.height=8}
+plot_exp_data(50000)
+```
+
+## 100000 fish
+```{r fig.width=12, fig.height=8}
+plot_exp_data(100000)
+```
+
+## 500000 fish
+```{r fig.width=12, fig.height=8}
+plot_exp_data(500000)
+```
+
+## 1000000 fish
+```{r fig.width=12, fig.height=8}
+plot_exp_data(1000000)
+```
+
+## 2000000 fish
+```{r fig.width=12, fig.height=8}
+plot_exp_data(2000000)
+```
+
+## 3000000 fish
+```{r fig.width=12, fig.height=8}
+plot_exp_data(3000000)
+```
+
+## 4000000 fish
+```{r fig.width=12, fig.height=8}
+plot_exp_data(4000000)
+```
+
+## 5000000 fish
+```{r fig.width=12, fig.height=8}
+plot_exp_data(5000000)
+```
+
+## 7500000 fish
+```{r fig.width=12, fig.height=8}
+plot_exp_data(7500000)
+```
+
+## 10000000 fish
+```{r fig.width=12, fig.height=8}
+plot_exp_data(10000000)
+```
