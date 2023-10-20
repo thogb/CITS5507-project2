@@ -7,8 +7,8 @@
  * @author Tao Hu
 */
 
-#ifndef H_WORK_PARITION
-#define H_WORK_PARITION
+#ifndef SIM_H_WORK_PARITION
+#define SIM_H_WORK_PARITION
 
 #include <stdlib.h>
 

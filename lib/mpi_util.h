@@ -2,11 +2,12 @@
  * @file mpi_util.h
  * 
  * Contains custom struct definitions and functions to asssit use of MPI
+ * 
  * @author Tao Hu
 */
 
-#ifndef H_MPI_UTIL
-#define H_MPI_UTIL
+#ifndef SIM_H_MPI_UTIL
+#define SIM_H_MPI_UTIL
 
 #include <mpi.h>
 #include <stddef.h>
