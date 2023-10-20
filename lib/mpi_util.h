@@ -77,4 +77,12 @@ void mpi_util_init_all_types() {
     mpi_util_init_type_fish();
 }
 
+/**
+ * Free all the MPI types commited in the program.
+*/
+void mpi_util_free_all_types() {
+    MPI_Type_free(&MPI_SIM_POSITION);
+    MPI_Type_free(&MPI_SIM_FISH);
+}
+
 #endif
