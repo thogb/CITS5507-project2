@@ -20,7 +20,7 @@
 #include "../lib/work_parition.h"
 #include "../lib/mpi_util.h"
 
-#define SIMULATION_STEPS 100
+#define SIMULATION_STEPS 10
 #define FISH_LAKE_WIDTH 200.0f
 #define FISH_LAKE_HEIGHT 200.0f
 

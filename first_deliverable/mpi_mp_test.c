@@ -17,7 +17,7 @@
 #include "../lib/mpi_util.h"
 
 // Define odd number of fishes to test the edge case
-#define FISH_AMOUNT 1155
+#define FISH_AMOUNT 1111
 #define MASTER_RANK 0
 #define FISH_LAKE_WIDTH 200.0f
 #define FISH_LAKE_HEIGHT 200.0f
@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
     }
 
     // Printing just to show that the first fish postion is cleared
-    printf("Process %d, first fish positon x = %f\n", pRank, 
+    printf("Process %d, first local fish positon x = %f\n", pRank, 
         localFishLake->fishes[0].position.x);
 
     // Gatherv would allow the master process to gather the data back
@@ -148,7 +148,7 @@ int main(int argc, char *argv[])
 
     // Write the recieved fish data to out2.txt
     if (pRank == MASTER_RANK) {
-        printf("Recieved data back from woker processes");
+        printf("Recieved data back from woker processes\n");
         write_fish_positions("out2.txt", fishLake);
         printf("Wrote output to out2.txt\n");
     }
