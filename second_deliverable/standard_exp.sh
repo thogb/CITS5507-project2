@@ -15,6 +15,7 @@ module load openmpi/4.0.5
 FISH_AMOUNT=1000
 GCC_LIB_LINK='-lm'
 GCC_OPTIONS="${GCC_LIB_LINK}"
+C_FILE_NAME="sim_mpi.c"
 
 if [[ ! -z $1 ]]
 then
@@ -31,24 +32,21 @@ fi
 OUT_FILE="${OUT_DIR}/exp_${FISH_AMOUNT}"
 
 function run_simulation {
+    # Define the actual number of thread to be used
     export OMP_NUM_THREADS=$1
-    srun -c $SLURM_CPUS_PER_TASK simulation_parallel $FISH_AMOUNT >> $OUT_FILE
+    # SLRUM_CPUS_PER_TASK is 128, just largest possible assigned to this task
+    srun -c $SLURM_CPUS_PER_TASK $C_FILE_NAME $FISH_AMOUNT >> $OUT_FILE
 }
 
 function run_experiment {
     GCC_OPTIONS="${GCC_LIB_LINK} -D $1"
 
-    mpicc $GCC_OPTIONS -fopenmp simulation_parallel.c -o simulation_parallel
+    mpicc $GCC_OPTIONS -fopenmp "${C_FILE_NAME}.c" -o $C_FILE_NAME
 
     echo "Running experiment: FISH_AMOUNT=${FISH_AMOUNT}, schedule=$1"
 
-    run_simulation 1
-    run_simulation 2
-    run_simulation 4
     run_simulation 8
-    run_simulation 16
     run_simulation 32
-    run_simulation 64
     run_simulation 128
 }
 
