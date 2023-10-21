@@ -61,15 +61,13 @@ void fish_init(Fish* fish, Position position) {
  * value defined by FISH_SWIM_MIN and FISH_SWIM_MAX.
  * 
  * @param fish the fish that will perofmr a swim
+ * @param newPosition the new position of the fish
+ * 
  * @return Position the new position of the fish
  */
 float fish_swim(Fish* fish, Position newPosition) {
     Position position = fish->position;
-    // position_increment(
-    //     &(fish->position), 
-    //     rand_float(FISH_SWIM_MIN, FISH_SWIM_MAX), 
-    //     rand_float(FISH_SWIM_MIN, FISH_SWIM_MAX)
-    // );
+
     fish->position = newPosition;    
 
     // update distanceFromOrigin, will be used later on

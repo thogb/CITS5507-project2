@@ -170,6 +170,7 @@ int main(int argc, char *argv[])
         MPI_COMM_WORLD
     );
 
+    // Every process will process the local fishes.
     fishes = localFishLake->fishes;
     // Just making sure every process gets a different seed.
     randSeed += 500 * pRank;
@@ -184,23 +185,18 @@ int main(int argc, char *argv[])
         sumOfDistWeight = 0;
         localMaxDeltaf = INT32_MIN;
 
-        // calc the value of objective function
-        #pragma omp parallel for schedule(S_METHOD) reduction(+: objectiveValue)
-        for (int i = 0; i < workPartition->size; i++)
-        {
-            objectiveValue += fishes[i].distanceFromOrigin;
-        }
-
         // calculate barycenter of the fish school. In the real simulation I am 
         // guessing this is needed to find the direction for the fish to swim 
         // towards. Hence, barycenter is calculated before the fish swims in 
         // each time step. The equation also uses W(t) to represent the fish 
         // weight used in the barycenter calculation. The following eat and swim
         //  will both be producing W(t+1) and Position(t+1)
-        #pragma omp parallel for schedule(S_METHOD) reduction(+: sumOfDistWeight)
+        #pragma omp parallel for schedule(S_METHOD) reduction(+: sumOfDistWeight, objectiveValue)
         for (int i = 0; i < workPartition->size; i++)
         {
             sumOfDistWeight += fishes[i].distanceFromOrigin * fishes[i].weight;
+            // calc the value of objective function
+            objectiveValue += fishes[i].distanceFromOrigin;
         }
 
         // Prepare for message passing by storing in localBarycenterVals.
@@ -217,7 +213,7 @@ int main(int argc, char *argv[])
             MPI_SUM,
             MPI_COMM_WORLD
         );
-
+ 
         barycentre = globalBarycenterVals[0] / globalBarycenterVals[1];
 
         // every fish will first swim so deltaF can be calculated
@@ -227,9 +223,9 @@ int main(int argc, char *argv[])
 
             #pragma omp for schedule(S_METHOD)
             for (int j = 0; j < workPartition->size; j++) {
-                // The fish will swim and keep track of the old position, which is
-                // used to calculate delta f (the change in objective function).
-                // Each fish also stores a deltaF maxDeltaF is updated.
+                // The fish will perform the swim action and change the 
+                // position. Delta f is calculated after the change in position 
+                // and is stored as a attribute of the fish.
                 float deltaF = fish_lake_fish_swim(localFishLake, &(fishes[j]), &randSeed);
             }
         }
@@ -264,8 +260,10 @@ int main(int argc, char *argv[])
     elapsed_secs = end - start;
 
     if (pRank == MASTER_RANK) {
-        printf("omp_get_max_threads=%d, schedule=%s, time_taken=%f\n", 
-            omp_get_max_threads(), S_METHOD_STR, elapsed_secs);
+        printf("fish_amount=%d, simulation_steps=%d, num_of_processes=%d, "
+            "num_of_threads=%d, schedule=%s, time_taken=%f\n", 
+            fishAmount, simulationSteps, wSize, omp_get_max_threads(), 
+            S_METHOD_STR, elapsed_secs);
     }
     
     // Gatherv would allow the master process to gather the data back
