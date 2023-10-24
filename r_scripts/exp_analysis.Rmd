@@ -12,69 +12,102 @@ library(ggplot2)
 ```
 
 ## Plot fish function
+
 ```{r fig.width=12, fig.height=8}
+read_all_data <- function(dir_name) {
+  exp_data <- NULL
+  # Get all the experiment data files
+  files <- list.files(path = dir_name, pattern = "*.csv")
+
+  # Read each of the csv file and combine to exp_data
+  for (file_name in files) {
+    temp <- read.csv(file.path(dir_name, file_name))
+    if (is.null(exp_data)) {
+      exp_data <- temp
+    } else {
+      exp_data <- rbind(exp_data, temp)
+    }
+  }
+
+  return(exp_data)
+}
+
+
+plot_bar_fa_pn_ss <- function(fa, pn, ss) {
+  df <- subset(exp_data, fish_amount == fa &
+    process_num == pn & sim_steps == ss) 
+  df[, "thread_num"] <- factor(df[, "thread_num"])
+
+  ggplot(data = df, aes(x = thread_num, y = duration, fill = schedule)) +
+    geom_bar(position = "dodge", stat = "identity") +
+
+
+  ggtitle(sprintf("Simulation with %d fish and 100 steps", fa))
+}
+
 plot_exp_data <- function(fish_amount) {
   exp_data <- read.csv(sprintf("exp_data/exp_%d.csv", fish_amount))
   exp_data[, 'thread_num'] <- factor(exp_data[, 'thread_num'])
-  
+
   ggplot(data = exp_data, aes(x=thread_num, y=duration, fill=schedule)) +
     geom_bar(position="dodge", stat="identity",) +
-    
+
+
   ggtitle(sprintf("Simulation with %d fish and 100 steps", fish_amount))
 }
+
+exp_data <- read_all_data("exp_data_2")
 ```
 
-## 10000 fish
+
+## 10000000 2 process and 100 time steps.
 ```{r fig.width=12, fig.height=8}
-plot_exp_data(10000)
+plot_bar_fa_pn_ss(10000000, 2, 100)
 ```
 
-## 50000 fish
+## 10000000 3 process and 100 time steps.
 ```{r fig.width=12, fig.height=8}
-plot_exp_data(50000)
+plot_bar_fa_pn_ss(10000000, 3, 100)
 ```
 
-## 100000 fish
+## 10000000 4 process and 100 time steps.
 ```{r fig.width=12, fig.height=8}
-plot_exp_data(100000)
+plot_bar_fa_pn_ss(10000000, 4, 100)
 ```
 
-## 500000 fish
+## 10000000 4 process and 100 time steps.
 ```{r fig.width=12, fig.height=8}
-plot_exp_data(500000)
+  df <- subset(exp_data, fish_amount == 10000000 & sim_steps == 100) 
+  df[, "thread_num"] <- factor(df[, "thread_num"])
+
+  ggplot(data = df, aes(x = thread_num, y = duration, fill = schedule)) +
+    geom_bar(position = "dodge", stat = "identity") +
+    facet_wrap(~process_num, ncol = 1)
+
+
+  ggtitle(sprintf("Simulation with %d fish and 100 steps", fa))
 ```
 
-## 1000000 fish
+## Effect of increase simulation steps on performance
+fish_amount = 10000000, thread_num = 128 and schedule = static as it is limited as the max number of thread in a Setonix node
+
 ```{r fig.width=12, fig.height=8}
-plot_exp_data(1000000)
+df <- subset(exp_data, fish_amount == 10000000 & thread_num == 128 & 
+  schedule == "static")
+df[, "process_num"] <- as.factor(df[, "process_num"])
+ggplot() +
+  geom_smooth(data = df, aes(x = sim_steps, y = duration, colour = process_num), 
+    stat = "identity")
 ```
 
-## 2000000 fish
-```{r fig.width=12, fig.height=8}
-plot_exp_data(2000000)
-```
+## Effect of increase fish amount on performance
+sim_step = 100, thread_num = 128 and scheulde = static
 
-## 3000000 fish
 ```{r fig.width=12, fig.height=8}
-plot_exp_data(3000000)
-```
-
-## 4000000 fish
-```{r fig.width=12, fig.height=8}
-plot_exp_data(4000000)
-```
-
-## 5000000 fish
-```{r fig.width=12, fig.height=8}
-plot_exp_data(5000000)
-```
-
-## 7500000 fish
-```{r fig.width=12, fig.height=8}
-plot_exp_data(7500000)
-```
-
-## 10000000 fish
-```{r fig.width=12, fig.height=8}
-plot_exp_data(10000000)
+df <- subset(exp_data, sim_steps == 100 & thread_num == 128 & 
+  schedule == "static")
+df[, "process_num"] <- as.factor(df[, "process_num"])
+ggplot() +
+  geom_smooth(data = df, aes(x = fish_amount, y = duration, colour = process_num), 
+    stat = "identity")
 ```
