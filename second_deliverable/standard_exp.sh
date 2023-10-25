@@ -49,18 +49,63 @@ function compile_program {
 
 # Run a single simulation and save the data into output file.
 # Params:
-#       $1: number of processes
-#       $2: number of threads per process
-#       $3: number of fish in the simulation
-#       $4: number of simulation steps
+#       $1: the fish amount
+#       $2: the simulation steps
+#       $3: the number of processes
+#       $4: the number of threads per process
 function run_simulation {
-    OUT_FILE="${OUT_DIR}/exp_$3_$4"
+    OUT_FILE="${OUT_DIR}/exp_$1_$2.txt"
 
-    # Already have the data, not running again
+    # Define the actual number of thread to be used
+    export OMP_NUM_THREADS=$4
+    # SLRUM_CPUS_PER_TASK is 128, just largest possible assigned to this task
+    # Data from the program is appended to the correct output file
+    srun -N $3 -n $3 -c $SLURM_CPUS_PER_TASK $C_FILE_NAME $1 $2 >> $OUT_FILE
+}
+
+# Run the experiment with differnt thread amount
+# Params:
+#       $1: the fish amount
+#       $2: the simulation steps
+#       $3: number of process
+function run_experiment_thread_amount {
+    run_experiment_params_set $1 $2 $3 2
+    run_experiment_params_set $1 $2 $3 8
+    run_experiment_params_set $1 $2 $3 32
+    run_experiment_params_set $1 $2 $3 128
+}
+
+# Run the experiment with a different set of process num
+# Params:
+#       $1: the fish amount
+#       $2: the simulation steps
+function run_experiment_process {
+    run_experiment_thread_amount $1 $2 2
+    run_experiment_thread_amount $1 $2 3
+    run_experiment_thread_amount $1 $2 4
+}
+
+# Run the experiment with different thread schedule method
+# Params:
+#       $1: the fish amount
+#       $2: the simulation steps
+function run_experiment_thread_schedule {
+    OUT_FILE="${OUT_DIR}/exp_$1_$2.txt"
+
+    # The file exists, means the experiement has run before. This check is 
+    # useful when one submitted job runs out of time and require sto resubmit.
     if [[ -f OUT_FILE ]]
     then
         return 1
     fi
+
+    SCHEDULE_METHOD=$SCHEDULE_METHOD_STATIC
+    compile_program $SCHEDULE_METHOD
+    run_experiment_process $1 $2
+
+    SCHEDULE_METHOD=$SCHEDULE_METHOD_GUIDED
+    compile_program $SCHEDULE_METHOD
+    run_experiment_process $1 $2
 
     # Dynamic becomes very slow for some unknown reason, stop when too much 
     # computation
@@ -68,75 +113,39 @@ function run_simulation {
     then
         return 1
     fi
-
-    # Define the actual number of thread to be used
-    export OMP_NUM_THREADS=$2
-    # SLRUM_CPUS_PER_TASK is 128, just largest possible assigned to this task
-    srun -N $1 -n $1 -c $SLURM_CPUS_PER_TASK $C_FILE_NAME $3 $4 >> $OUT_FILE
-}
-
-# Run experiment with a set of simulation inputs
-# Params:
-#       $1: number of process
-#       $2: number of threads per process
-function run_experiment_params_set {
-    # Fish amounts
-    run_simulation $1 $2 100000 100
-    run_simulation $1 $2 500000 100
-    run_simulation $1 $2 1000000 100
-    run_simulation $1 $2 5000000 100
-    run_simulation $1 $2 10000000 100
-
-    # Lower time step and fish amounts
-    run_simulation $1 $2 10000000 10
-    run_simulation $1 $2 30000000 10
-    run_simulation $1 $2 50000000 10
-    run_simulation $1 $2 100000000 10
-    run_simulation $1 $2 300000000 10
-    run_simulation $1 $2 500000000 10
-
-    # Simulation steps
-    run_simulation $1 $2 10000000 10
-    run_simulation $1 $2 10000000 20
-    run_simulation $1 $2 10000000 30
-    run_simulation $1 $2 10000000 20
-    run_simulation $1 $2 10000000 20
-    run_simulation $1 $2 10000000 20
-    run_simulation $1 $2 10000000 70
-    run_simulation $1 $2 10000000 20
-    run_simulation $1 $2 10000000 90
-}
-
-# Run the experiment
-# Params:
-#       $1: number of process
-function run_experiment_thread_amount {
-    run_experiment_params_set $1 2
-    run_experiment_params_set $1 8
-    run_experiment_params_set $1 32
-    run_experiment_params_set $1 128
-}
-
-# Run the experiment with a different set of process num
-function run_experiment_process {
-    run_experiment_thread_amount 2
-    run_experiment_thread_amount 3
-    run_experiment_thread_amount 4
-}
-
-# Run the experiment with different thread schedule method
-function run_experiment_thread_schedule {
-    SCHEDULE_METHOD=$SCHEDULE_METHOD_STATIC
-    compile_program $SCHEDULE_METHOD
-    run_experiment_process
     
     SCHEDULE_METHOD=$SCHEDULE_METHOD_DYNAMIC
     compile_program $SCHEDULE_METHOD
-    run_experiment_process
+    run_experiment_process $1 $2
+}
 
-    SCHEDULE_METHOD=$SCHEDULE_METHOD_GUIDED
-    compile_program $SCHEDULE_METHOD
-    run_experiment_process
+# Run all experiements by combination of fish amount and simulation steps
+function run_all_experiment {
+    # Fish amounts
+    run_experiment_thread_schedule 100000 100
+    run_experiment_thread_schedule 500000 100
+    run_experiment_thread_schedule 1000000 100
+    run_experiment_thread_schedule 5000000 100
+    run_experiment_thread_schedule 10000000 100
+
+    # Lower time step and fish amounts
+    run_experiment_thread_schedule 10000000 10
+    run_experiment_thread_schedule 30000000 10
+    run_experiment_thread_schedule 50000000 10
+    run_experiment_thread_schedule 100000000 10
+    run_experiment_thread_schedule 300000000 10
+    run_experiment_thread_schedule 500000000 10
+
+    # Simulation steps
+    run_experiment_thread_schedule 10000000 10
+    run_experiment_thread_schedule 10000000 20
+    run_experiment_thread_schedule 10000000 30
+    run_experiment_thread_schedule 10000000 20
+    run_experiment_thread_schedule 10000000 20
+    run_experiment_thread_schedule 10000000 20
+    run_experiment_thread_schedule 10000000 70
+    run_experiment_thread_schedule 10000000 20
+    run_experiment_thread_schedule 10000000 90
 }
 
 echo "Starting all experiments"
@@ -145,5 +154,5 @@ echo "Finished all experiments"
 
 for fileName in $(ls $OUT_DIR)
 do
-    raw_to_csv "${OUT_DIR}/${fileName}" "${OUT_DIR_CSV}/${fileName}.csv"   
+    ./raw_to_csv.sh "${OUT_DIR}/${fileName}" "${OUT_DIR_CSV}/${fileName}.csv"   
 done
