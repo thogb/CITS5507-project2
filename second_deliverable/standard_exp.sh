@@ -5,10 +5,11 @@
 #SBATCH --ntasks=4
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=128
-#SBATCH --mem-per-cpu=16G
+#SBATCH --exclusive
 #SBATCH --time=00:30:00
 
-module load openmpi/4.0.5
+# Seems mpicc is there by default
+#module load openmpi/4.0.5
 
 # Retrieved from project 1 and modified.
 
@@ -21,9 +22,11 @@ SCHEDULE_METHOD_GUIDED="S_GUIDED"
 SCHEDULE_METHOD_DYNAMIC="S_DYNAMIC"
 SCHEDULE_METHOD=$SCHEDULE_EMTHOD_STATIC
 
-
 OUT_DIR="exp_data"
 OUT_DIR_CSV="${OUT_DIR}_csv"
+
+# Experiment combinations
+EXP_INSTRUCTION_FILE="exp_instructions.txt"
 
 if [[ ! -d "$OUT_DIR" ]]
 then
@@ -69,10 +72,10 @@ function run_simulation {
 #       $2: the simulation steps
 #       $3: number of process
 function run_experiment_thread_amount {
-    run_experiment_params_set $1 $2 $3 2
-    run_experiment_params_set $1 $2 $3 8
-    run_experiment_params_set $1 $2 $3 32
-    run_experiment_params_set $1 $2 $3 128
+    run_simulation $1 $2 $3 2
+    run_simulation $1 $2 $3 8
+    run_simulation $1 $2 $3 32
+    run_simulation $1 $2 $3 128
 }
 
 # Run the experiment with a different set of process num
@@ -109,7 +112,7 @@ function run_experiment_thread_schedule {
 
     # Dynamic becomes very slow for some unknown reason, stop when too much 
     # computation
-    if [[ $SCHEDULE_METHOD == $SCHEDULE_METHOD_DYNAMIC && $(($3 * $3)) -ge 100000000 ]]
+    if [[ $SCHEDULE_METHOD == $SCHEDULE_METHOD_DYNAMIC && $(($1 * $2)) -ge 100000000 ]]
     then
         return 1
     fi
@@ -121,36 +124,23 @@ function run_experiment_thread_schedule {
 
 # Run all experiements by combination of fish amount and simulation steps
 function run_all_experiment {
-    # Fish amounts
-    run_experiment_thread_schedule 100000 100
-    run_experiment_thread_schedule 500000 100
-    run_experiment_thread_schedule 1000000 100
-    run_experiment_thread_schedule 5000000 100
-    run_experiment_thread_schedule 10000000 100
-
-    # Lower time step and fish amounts
-    run_experiment_thread_schedule 10000000 10
-    run_experiment_thread_schedule 30000000 10
-    run_experiment_thread_schedule 50000000 10
-    run_experiment_thread_schedule 100000000 10
-    run_experiment_thread_schedule 300000000 10
-    run_experiment_thread_schedule 500000000 10
-
-    # Simulation steps
-    run_experiment_thread_schedule 10000000 10
-    run_experiment_thread_schedule 10000000 20
-    run_experiment_thread_schedule 10000000 30
-    run_experiment_thread_schedule 10000000 20
-    run_experiment_thread_schedule 10000000 20
-    run_experiment_thread_schedule 10000000 20
-    run_experiment_thread_schedule 10000000 70
-    run_experiment_thread_schedule 10000000 20
-    run_experiment_thread_schedule 10000000 90
+    JOB_DONE=1
+    N_OF_JOBS=$(cat $EXP_INSTRUCTION_FILE | wc -l)
+    for line in $(cat $EXP_INSTRUCTION_FILE)
+    do
+        echo "performing experiment set: ${JOB_DONE}/${N_OF_JOBS}"
+        fishAmount=$(echo $line | cut -d ',' -f 1)
+        steps=$(echo $line | cut -d ',' -f 2)
+        run_experiment_thread_schedule $fishAmount $steps
+        JOB_DONE=$((JOB_DONE + 1))
+    done
 }
 
 echo "Starting all experiments"
-run_experiment_thread_schedule
+run_all_experiment
 echo "Finished all experiments"
+
+chmod u+x raw_to_csv.sh
 
 for fileName in $(ls $OUT_DIR)
 do
