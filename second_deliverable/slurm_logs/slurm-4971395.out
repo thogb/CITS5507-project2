@@ -1,0 +1,20 @@
+Starting all experiments
+performing experiment set: 1/23
+performing experiment set: 2/23
+performing experiment set: 3/23
+performing experiment set: 4/23
+performing experiment set: 5/23
+performing experiment set: 6/23
+performing experiment set: 7/23
+performing experiment set: 8/23
+performing experiment set: 9/23
+srun: Job 4971395 step creation temporarily disabled, retrying (Requested nodes are busy)
+srun: Step created for job 4971395
+performing experiment set: 10/23
+performing experiment set: 11/23
+performing experiment set: 12/23
+slurmstepd: error: *** STEP 4971395.85 ON nid002605 CANCELLED AT 2023-10-26T01:22:45 DUE TO TIME LIMIT ***
+slurmstepd: error: *** JOB 4971395 ON nid002605 CANCELLED AT 2023-10-26T01:22:45 DUE TO TIME LIMIT ***
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: error: nid002606: task 1: Terminated
+srun: launch/slurm: _step_signal: Terminating StepId=4971395.85

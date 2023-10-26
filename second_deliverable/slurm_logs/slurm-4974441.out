@@ -1,0 +1,17 @@
+Starting all experiments
+performing experiment set: 1/23
+performing experiment set: 2/23
+performing experiment set: 3/23
+performing experiment set: 4/23
+performing experiment set: 5/23
+performing experiment set: 6/23
+performing experiment set: 7/23
+performing experiment set: 8/23
+performing experiment set: 9/23
+performing experiment set: 10/23
+performing experiment set: 11/23
+performing experiment set: 12/23
+performing experiment set: 13/23
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+slurmstepd: error: *** STEP 4974441.35 ON nid002606 CANCELLED AT 2023-10-26T10:02:57 ***
+slurmstepd: error: *** JOB 4974441 ON nid002606 CANCELLED AT 2023-10-26T10:02:57 ***

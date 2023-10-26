@@ -1,0 +1,325 @@
+Process 1 is running with 2 thread
+Program running with 2 processes
+Initialised the fish lake
+Process 0 is running with 2 thread
+Process 0 is assigned workload of 1250000 fishes with offset of 0
+Process 1 is assigned workload of 1250000 fishes with offset of 1250000
+fish_amount=2500000, simulation_steps=100, num_of_processes=2, num_of_threads=2, schedule=static, time_taken=3.813454
+Process 1 is running with 8 thread
+Program running with 2 processes
+Initialised the fish lake
+Process 0 is running with 8 thread
+Process 0 is assigned workload of 1250000 fishes with offset of 0
+Process 1 is assigned workload of 1250000 fishes with offset of 1250000
+fish_amount=2500000, simulation_steps=100, num_of_processes=2, num_of_threads=8, schedule=static, time_taken=0.972278
+Process 1 is running with 32 thread
+Program running with 2 processes
+Initialised the fish lake
+Process 0 is running with 32 thread
+Process 0 is assigned workload of 1250000 fishes with offset of 0
+Process 1 is assigned workload of 1250000 fishes with offset of 1250000
+fish_amount=2500000, simulation_steps=100, num_of_processes=2, num_of_threads=32, schedule=static, time_taken=0.292222
+Program running with 2 processes
+Initialised the fish lake
+Process 0 is running with 128 thread
+Process 0 is assigned workload of 1250000 fishes with offset of 0
+Process 1 is assigned workload of 1250000 fishes with offset of 1250000
+fish_amount=2500000, simulation_steps=100, num_of_processes=2, num_of_threads=128, schedule=static, time_taken=2.130982
+Process 1 is running with 128 thread
+Program running with 3 processes
+Initialised the fish lake
+Process 0 is running with 2 thread
+Process 0 is assigned workload of 833334 fishes with offset of 0
+Process 1 is assigned workload of 833333 fishes with offset of 833334
+Process 2 is assigned workload of 833333 fishes with offset of 1666667
+fish_amount=2500000, simulation_steps=100, num_of_processes=3, num_of_threads=2, schedule=static, time_taken=2.571601
+Process 1 is running with 2 thread
+Process 2 is running with 2 thread
+Process 2 is running with 8 thread
+Program running with 3 processes
+Initialised the fish lake
+Process 0 is running with 8 thread
+Process 0 is assigned workload of 833334 fishes with offset of 0
+Process 1 is assigned workload of 833333 fishes with offset of 833334
+Process 2 is assigned workload of 833333 fishes with offset of 1666667
+fish_amount=2500000, simulation_steps=100, num_of_processes=3, num_of_threads=8, schedule=static, time_taken=0.659890
+Process 1 is running with 8 thread
+Process 1 is running with 32 thread
+Program running with 3 processes
+Initialised the fish lake
+Process 0 is running with 32 thread
+Process 0 is assigned workload of 833334 fishes with offset of 0
+Process 1 is assigned workload of 833333 fishes with offset of 833334
+Process 2 is assigned workload of 833333 fishes with offset of 1666667
+fish_amount=2500000, simulation_steps=100, num_of_processes=3, num_of_threads=32, schedule=static, time_taken=0.209147
+Process 2 is running with 32 thread
+Process 1 is running with 128 thread
+Process 2 is running with 128 thread
+Program running with 3 processes
+Initialised the fish lake
+Process 0 is running with 128 thread
+Process 0 is assigned workload of 833334 fishes with offset of 0
+Process 1 is assigned workload of 833333 fishes with offset of 833334
+Process 2 is assigned workload of 833333 fishes with offset of 1666667
+fish_amount=2500000, simulation_steps=100, num_of_processes=3, num_of_threads=128, schedule=static, time_taken=1.920675
+Process 1 is running with 2 thread
+Program running with 4 processes
+Initialised the fish lake
+Process 0 is running with 2 thread
+Process 0 is assigned workload of 625000 fishes with offset of 0
+Process 1 is assigned workload of 625000 fishes with offset of 625000
+Process 2 is assigned workload of 625000 fishes with offset of 1250000
+Process 3 is assigned workload of 625000 fishes with offset of 1875000
+fish_amount=2500000, simulation_steps=100, num_of_processes=4, num_of_threads=2, schedule=static, time_taken=1.921759
+Process 2 is running with 2 thread
+Process 3 is running with 2 thread
+Program running with 4 processes
+Initialised the fish lake
+Process 0 is running with 8 thread
+Process 0 is assigned workload of 625000 fishes with offset of 0
+Process 1 is assigned workload of 625000 fishes with offset of 625000
+Process 2 is assigned workload of 625000 fishes with offset of 1250000
+Process 3 is assigned workload of 625000 fishes with offset of 1875000
+fish_amount=2500000, simulation_steps=100, num_of_processes=4, num_of_threads=8, schedule=static, time_taken=0.505953
+Process 2 is running with 8 thread
+Process 3 is running with 8 thread
+Process 1 is running with 8 thread
+Process 3 is running with 32 thread
+Program running with 4 processes
+Initialised the fish lake
+Process 0 is running with 32 thread
+Process 0 is assigned workload of 625000 fishes with offset of 0
+Process 1 is assigned workload of 625000 fishes with offset of 625000
+Process 2 is assigned workload of 625000 fishes with offset of 1250000
+Process 3 is assigned workload of 625000 fishes with offset of 1875000
+fish_amount=2500000, simulation_steps=100, num_of_processes=4, num_of_threads=32, schedule=static, time_taken=0.165883
+Process 1 is running with 32 thread
+Process 2 is running with 32 thread
+Process 1 is running with 128 thread
+Program running with 4 processes
+Initialised the fish lake
+Process 0 is running with 128 thread
+Process 0 is assigned workload of 625000 fishes with offset of 0
+Process 1 is assigned workload of 625000 fishes with offset of 625000
+Process 2 is assigned workload of 625000 fishes with offset of 1250000
+Process 3 is assigned workload of 625000 fishes with offset of 1875000
+fish_amount=2500000, simulation_steps=100, num_of_processes=4, num_of_threads=128, schedule=static, time_taken=0.087736
+Process 2 is running with 128 thread
+Process 3 is running with 128 thread
+Program running with 2 processes
+Initialised the fish lake
+Process 0 is running with 2 thread
+Process 0 is assigned workload of 1250000 fishes with offset of 0
+Process 1 is assigned workload of 1250000 fishes with offset of 1250000
+fish_amount=2500000, simulation_steps=100, num_of_processes=2, num_of_threads=2, schedule=guided, time_taken=4.197665
+Process 1 is running with 2 thread
+Program running with 2 processes
+Initialised the fish lake
+Process 0 is running with 8 thread
+Process 0 is assigned workload of 1250000 fishes with offset of 0
+Process 1 is assigned workload of 1250000 fishes with offset of 1250000
+fish_amount=2500000, simulation_steps=100, num_of_processes=2, num_of_threads=8, schedule=guided, time_taken=3.117767
+Process 1 is running with 8 thread
+Program running with 2 processes
+Initialised the fish lake
+Process 0 is running with 32 thread
+Process 0 is assigned workload of 1250000 fishes with offset of 0
+Process 1 is assigned workload of 1250000 fishes with offset of 1250000
+fish_amount=2500000, simulation_steps=100, num_of_processes=2, num_of_threads=32, schedule=guided, time_taken=1.456070
+Process 1 is running with 32 thread
+Program running with 2 processes
+Initialised the fish lake
+Process 0 is running with 128 thread
+Process 0 is assigned workload of 1250000 fishes with offset of 0
+Process 1 is assigned workload of 1250000 fishes with offset of 1250000
+fish_amount=2500000, simulation_steps=100, num_of_processes=2, num_of_threads=128, schedule=guided, time_taken=1.372845
+Process 1 is running with 128 thread
+Process 1 is running with 2 thread
+Process 2 is running with 2 thread
+Program running with 3 processes
+Initialised the fish lake
+Process 0 is running with 2 thread
+Process 0 is assigned workload of 833334 fishes with offset of 0
+Process 1 is assigned workload of 833333 fishes with offset of 833334
+Process 2 is assigned workload of 833333 fishes with offset of 1666667
+fish_amount=2500000, simulation_steps=100, num_of_processes=3, num_of_threads=2, schedule=guided, time_taken=2.699806
+Program running with 3 processes
+Initialised the fish lake
+Process 0 is running with 8 thread
+Process 0 is assigned workload of 833334 fishes with offset of 0
+Process 1 is assigned workload of 833333 fishes with offset of 833334
+Process 2 is assigned workload of 833333 fishes with offset of 1666667
+fish_amount=2500000, simulation_steps=100, num_of_processes=3, num_of_threads=8, schedule=guided, time_taken=2.081852
+Process 1 is running with 8 thread
+Process 2 is running with 8 thread
+Program running with 3 processes
+Initialised the fish lake
+Process 0 is running with 32 thread
+Process 0 is assigned workload of 833334 fishes with offset of 0
+Process 1 is assigned workload of 833333 fishes with offset of 833334
+Process 2 is assigned workload of 833333 fishes with offset of 1666667
+fish_amount=2500000, simulation_steps=100, num_of_processes=3, num_of_threads=32, schedule=guided, time_taken=0.926920
+Process 2 is running with 32 thread
+Process 1 is running with 32 thread
+Program running with 3 processes
+Initialised the fish lake
+Process 0 is running with 128 thread
+Process 0 is assigned workload of 833334 fishes with offset of 0
+Process 1 is assigned workload of 833333 fishes with offset of 833334
+Process 2 is assigned workload of 833333 fishes with offset of 1666667
+fish_amount=2500000, simulation_steps=100, num_of_processes=3, num_of_threads=128, schedule=guided, time_taken=0.933446
+Process 2 is running with 128 thread
+Process 1 is running with 128 thread
+Program running with 4 processes
+Initialised the fish lake
+Process 0 is running with 2 thread
+Process 0 is assigned workload of 625000 fishes with offset of 0
+Process 1 is assigned workload of 625000 fishes with offset of 625000
+Process 2 is assigned workload of 625000 fishes with offset of 1250000
+Process 3 is assigned workload of 625000 fishes with offset of 1875000
+fish_amount=2500000, simulation_steps=100, num_of_processes=4, num_of_threads=2, schedule=guided, time_taken=2.140360
+Process 1 is running with 2 thread
+Process 2 is running with 2 thread
+Process 3 is running with 2 thread
+Program running with 4 processes
+Initialised the fish lake
+Process 0 is running with 8 thread
+Process 0 is assigned workload of 625000 fishes with offset of 0
+Process 1 is assigned workload of 625000 fishes with offset of 625000
+Process 2 is assigned workload of 625000 fishes with offset of 1250000
+Process 3 is assigned workload of 625000 fishes with offset of 1875000
+fish_amount=2500000, simulation_steps=100, num_of_processes=4, num_of_threads=8, schedule=guided, time_taken=1.624087
+Process 1 is running with 8 thread
+Process 3 is running with 8 thread
+Process 2 is running with 8 thread
+Program running with 4 processes
+Initialised the fish lake
+Process 0 is running with 32 thread
+Process 0 is assigned workload of 625000 fishes with offset of 0
+Process 1 is assigned workload of 625000 fishes with offset of 625000
+Process 2 is assigned workload of 625000 fishes with offset of 1250000
+Process 3 is assigned workload of 625000 fishes with offset of 1875000
+fish_amount=2500000, simulation_steps=100, num_of_processes=4, num_of_threads=32, schedule=guided, time_taken=0.583068
+Process 3 is running with 32 thread
+Process 2 is running with 32 thread
+Process 1 is running with 32 thread
+Process 3 is running with 128 thread
+Process 1 is running with 128 thread
+Program running with 4 processes
+Initialised the fish lake
+Process 0 is running with 128 thread
+Process 0 is assigned workload of 625000 fishes with offset of 0
+Process 1 is assigned workload of 625000 fishes with offset of 625000
+Process 2 is assigned workload of 625000 fishes with offset of 1250000
+Process 3 is assigned workload of 625000 fishes with offset of 1875000
+fish_amount=2500000, simulation_steps=100, num_of_processes=4, num_of_threads=128, schedule=guided, time_taken=0.647646
+Process 2 is running with 128 thread
+Program running with 2 processes
+Initialised the fish lake
+Process 0 is running with 2 thread
+Process 0 is assigned workload of 1250000 fishes with offset of 0
+Process 1 is assigned workload of 1250000 fishes with offset of 1250000
+fish_amount=2500000, simulation_steps=100, num_of_processes=2, num_of_threads=2, schedule=dynamic, time_taken=36.146318
+Process 1 is running with 2 thread
+Program running with 2 processes
+Initialised the fish lake
+Process 0 is running with 8 thread
+Process 0 is assigned workload of 1250000 fishes with offset of 0
+Process 1 is assigned workload of 1250000 fishes with offset of 1250000
+fish_amount=2500000, simulation_steps=100, num_of_processes=2, num_of_threads=8, schedule=dynamic, time_taken=67.451431
+Process 1 is running with 8 thread
+Program running with 2 processes
+Initialised the fish lake
+Process 0 is running with 32 thread
+Process 0 is assigned workload of 1250000 fishes with offset of 0
+Process 1 is assigned workload of 1250000 fishes with offset of 1250000
+fish_amount=2500000, simulation_steps=100, num_of_processes=2, num_of_threads=32, schedule=dynamic, time_taken=55.765653
+Process 1 is running with 32 thread
+Program running with 2 processes
+Initialised the fish lake
+Process 0 is running with 128 thread
+Process 0 is assigned workload of 1250000 fishes with offset of 0
+Process 1 is assigned workload of 1250000 fishes with offset of 1250000
+fish_amount=2500000, simulation_steps=100, num_of_processes=2, num_of_threads=128, schedule=dynamic, time_taken=20.464079
+Process 1 is running with 128 thread
+Program running with 3 processes
+Initialised the fish lake
+Process 0 is running with 2 thread
+Process 0 is assigned workload of 833334 fishes with offset of 0
+Process 1 is assigned workload of 833333 fishes with offset of 833334
+Process 2 is assigned workload of 833333 fishes with offset of 1666667
+fish_amount=2500000, simulation_steps=100, num_of_processes=3, num_of_threads=2, schedule=dynamic, time_taken=24.067029
+Process 1 is running with 2 thread
+Process 2 is running with 2 thread
+Program running with 3 processes
+Initialised the fish lake
+Process 0 is running with 8 thread
+Process 0 is assigned workload of 833334 fishes with offset of 0
+Process 1 is assigned workload of 833333 fishes with offset of 833334
+Process 2 is assigned workload of 833333 fishes with offset of 1666667
+fish_amount=2500000, simulation_steps=100, num_of_processes=3, num_of_threads=8, schedule=dynamic, time_taken=45.874630
+Process 1 is running with 8 thread
+Process 2 is running with 8 thread
+Process 1 is running with 32 thread
+Process 2 is running with 32 thread
+Program running with 3 processes
+Initialised the fish lake
+Process 0 is running with 32 thread
+Process 0 is assigned workload of 833334 fishes with offset of 0
+Process 1 is assigned workload of 833333 fishes with offset of 833334
+Process 2 is assigned workload of 833333 fishes with offset of 1666667
+fish_amount=2500000, simulation_steps=100, num_of_processes=3, num_of_threads=32, schedule=dynamic, time_taken=37.728630
+Program running with 3 processes
+Initialised the fish lake
+Process 0 is running with 128 thread
+Process 0 is assigned workload of 833334 fishes with offset of 0
+Process 1 is assigned workload of 833333 fishes with offset of 833334
+Process 2 is assigned workload of 833333 fishes with offset of 1666667
+fish_amount=2500000, simulation_steps=100, num_of_processes=3, num_of_threads=128, schedule=dynamic, time_taken=14.030713
+Process 2 is running with 128 thread
+Process 1 is running with 128 thread
+Program running with 4 processes
+Initialised the fish lake
+Process 0 is running with 2 thread
+Process 0 is assigned workload of 625000 fishes with offset of 0
+Process 1 is assigned workload of 625000 fishes with offset of 625000
+Process 2 is assigned workload of 625000 fishes with offset of 1250000
+Process 3 is assigned workload of 625000 fishes with offset of 1875000
+fish_amount=2500000, simulation_steps=100, num_of_processes=4, num_of_threads=2, schedule=dynamic, time_taken=18.034965
+Process 2 is running with 2 thread
+Process 1 is running with 2 thread
+Process 3 is running with 2 thread
+Program running with 4 processes
+Initialised the fish lake
+Process 0 is running with 8 thread
+Process 0 is assigned workload of 625000 fishes with offset of 0
+Process 1 is assigned workload of 625000 fishes with offset of 625000
+Process 2 is assigned workload of 625000 fishes with offset of 1250000
+Process 3 is assigned workload of 625000 fishes with offset of 1875000
+fish_amount=2500000, simulation_steps=100, num_of_processes=4, num_of_threads=8, schedule=dynamic, time_taken=33.262186
+Process 2 is running with 8 thread
+Process 3 is running with 8 thread
+Process 1 is running with 8 thread
+Process 1 is running with 32 thread
+Program running with 4 processes
+Initialised the fish lake
+Process 0 is running with 32 thread
+Process 0 is assigned workload of 625000 fishes with offset of 0
+Process 1 is assigned workload of 625000 fishes with offset of 625000
+Process 2 is assigned workload of 625000 fishes with offset of 1250000
+Process 3 is assigned workload of 625000 fishes with offset of 1875000
+fish_amount=2500000, simulation_steps=100, num_of_processes=4, num_of_threads=32, schedule=dynamic, time_taken=27.752131
+Process 3 is running with 32 thread
+Process 2 is running with 32 thread
+Process 2 is running with 128 thread
+Program running with 4 processes
+Initialised the fish lake
+Process 0 is running with 128 thread
+Process 0 is assigned workload of 625000 fishes with offset of 0
+Process 1 is assigned workload of 625000 fishes with offset of 625000
+Process 2 is assigned workload of 625000 fishes with offset of 1250000
+Process 3 is assigned workload of 625000 fishes with offset of 1875000
+fish_amount=2500000, simulation_steps=100, num_of_processes=4, num_of_threads=128, schedule=dynamic, time_taken=10.371039
+Process 3 is running with 128 thread
+Process 1 is running with 128 thread
+Completed
