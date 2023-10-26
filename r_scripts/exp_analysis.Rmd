@@ -1,7 +1,7 @@
 ---
-title: "CITS5507 - Project 1 experiment analysis"
+title: "CITS5507 - Project 2 experiment analysis"
 author: "<i>Tao HU</i> (23805764)"
-date: "2023-09-25"
+date: "2023-10-26"
 output:
   html_document:
     df_print: paged
@@ -11,7 +11,7 @@ output:
 library(ggplot2)
 ```
 
-## Plot fish function
+## Reading all the data
 
 ```{r fig.width=12, fig.height=8}
 read_all_data <- function(dir_name) {
@@ -32,75 +32,48 @@ read_all_data <- function(dir_name) {
   return(exp_data)
 }
 
+exp_data <- read_all_data("../second_deliverable/exp_data_csv")
+```
 
-plot_bar_fa_pn_ss <- function(fa, pn, ss) {
-  df <- subset(exp_data, fish_amount == fa &
-    process_num == pn & sim_steps == ss) 
+
+## 10000000 4 process and 100 time steps.
+```{r fig.width=12, fig.height=16}
+  df <- subset(exp_data, fish_amount == 2500000 & sim_steps == 100) 
   df[, "thread_num"] <- factor(df[, "thread_num"])
 
   ggplot(data = df, aes(x = thread_num, y = duration, fill = schedule)) +
     geom_bar(position = "dodge", stat = "identity") +
-
-
-  ggtitle(sprintf("Simulation with %d fish and 100 steps", fa))
-}
-
-plot_exp_data <- function(fish_amount) {
-  exp_data <- read.csv(sprintf("exp_data/exp_%d.csv", fish_amount))
-  exp_data[, 'thread_num'] <- factor(exp_data[, 'thread_num'])
-
-  ggplot(data = exp_data, aes(x=thread_num, y=duration, fill=schedule)) +
-    geom_bar(position="dodge", stat="identity",) +
-
-
-  ggtitle(sprintf("Simulation with %d fish and 100 steps", fish_amount))
-}
-
-exp_data <- read_all_data("exp_data_2")
+    facet_wrap(~process_num, ncol = 1) + 
+    ggtitle("Histogram of duration against fish amount for different process and schedule")
 ```
 
-
-## 10000000 2 process and 100 time steps.
-```{r fig.width=12, fig.height=8}
-plot_bar_fa_pn_ss(10000000, 2, 100)
-```
-
-## 10000000 3 process and 100 time steps.
-```{r fig.width=12, fig.height=8}
-plot_bar_fa_pn_ss(10000000, 3, 100)
-```
-
-## 10000000 4 process and 100 time steps.
-```{r fig.width=12, fig.height=8}
-plot_bar_fa_pn_ss(10000000, 4, 100)
-```
-
-## 10000000 4 process and 100 time steps.
-```{r fig.width=12, fig.height=8}
-  df <- subset(exp_data, fish_amount == 10000000 & sim_steps == 100) 
-  df[, "thread_num"] <- factor(df[, "thread_num"])
-
-  ggplot(data = df, aes(x = thread_num, y = duration, fill = schedule)) +
-    geom_bar(position = "dodge", stat = "identity") +
-    facet_wrap(~process_num, ncol = 1)
-
-
-  ggtitle(sprintf("Simulation with %d fish and 100 steps", fa))
-```
-
-## Effect of increase simulation steps on performance
-fish_amount = 10000000, thread_num = 128 and schedule = static as it is limited as the max number of thread in a Setonix node
+## Effect of simulation steps on duration
+fish_amount = 100000000, thread_num = 128 and schedule = static as it is limited as the max number of thread in a Setonix node
 
 ```{r fig.width=12, fig.height=8}
-df <- subset(exp_data, fish_amount == 10000000 & thread_num == 128 & 
+df <- subset(exp_data, fish_amount == 100000000 & thread_num == 128 & 
   schedule == "static")
 df[, "process_num"] <- as.factor(df[, "process_num"])
 ggplot() +
   geom_smooth(data = df, aes(x = sim_steps, y = duration, colour = process_num), 
-    stat = "identity")
+    stat = "identity")+ 
+    ggtitle("Effect of increase simluation steps on duration")
 ```
 
-## Effect of increase fish amount on performance
+## Effect of simulation step on duration using different schedule
+fish_amount = 75000000, thread_num = 128 and schedule = static as it is limited as the max number of thread in a Setonix node
+
+```{r fig.width=12, fig.height=8}
+df <- subset(exp_data, fish_amount == 7500000 & thread_num == 128)
+df[, "process_num"] <- as.factor(df[, "process_num"])
+df[, "schedule"] <- as.factor(df[, "schedule"])
+ggplot() +
+  geom_smooth(data = df, aes(x = sim_steps, y = duration, colour = process_num, linetype = schedule), 
+    stat = "identity") +
+    ggtitle("Effect of increase simluation steps on duration with different schedule method")
+```
+
+## Effect of increase fish amount on duration
 sim_step = 100, thread_num = 128 and scheulde = static
 
 ```{r fig.width=12, fig.height=8}
@@ -109,5 +82,19 @@ df <- subset(exp_data, sim_steps == 100 & thread_num == 128 &
 df[, "process_num"] <- as.factor(df[, "process_num"])
 ggplot() +
   geom_smooth(data = df, aes(x = fish_amount, y = duration, colour = process_num), 
-    stat = "identity")
+    stat = "identity") +
+    ggtitle("Effect of increase fish amount on duration")
+```
+
+## Effect of increase fish amount on duration with different schedule method
+sim_step = 100, thread_num = 128 and scheulde = static
+
+```{r fig.width=12, fig.height=8}
+df <- subset(exp_data, sim_steps == 100 & thread_num == 128)
+df[, "process_num"] <- as.factor(df[, "process_num"])
+df[, "schedule"] <- as.factor(df[, "schedule"])
+ggplot() +
+  geom_smooth(data = df, aes(x = fish_amount, y = duration, colour = process_num, linetype = schedule), 
+    stat = "identity") + 
+    ggtitle("Effect of increase fish amount on duration with different schedule method")
 ```
