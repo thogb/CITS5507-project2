@@ -8,7 +8,8 @@
 #SBATCH --mem-per-cpu=16G
 #SBATCH --time=00:30:00
 
-module load openmpi/4.0.5
+# Seems mpicc is there by default
+#module load openmpi/4.0.5
 
 # Retrieved from project 1 and modified.
 

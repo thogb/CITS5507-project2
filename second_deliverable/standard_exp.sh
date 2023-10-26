@@ -24,6 +24,7 @@ SCHEDULE_METHOD=$SCHEDULE_EMTHOD_STATIC
 
 OUT_DIR="exp_data"
 OUT_DIR_CSV="${OUT_DIR}_csv"
+EXP_END_KEYWORD="Completed"
 
 # Experiment combinations
 EXP_INSTRUCTION_FILE="exp_instructions.txt"
@@ -72,7 +73,12 @@ function run_simulation {
 #       $2: the simulation steps
 #       $3: number of process
 function run_experiment_thread_amount {
-    run_simulation $1 $2 $3 2
+    # 2 process 2 thread on large computation takes a lot of time, hence not ran
+    if [[ $1 -lt 100000000 ]]
+    then
+        run_simulation $1 $2 $3 2
+    fi
+
     run_simulation $1 $2 $3 8
     run_simulation $1 $2 $3 32
     run_simulation $1 $2 $3 128
@@ -97,9 +103,15 @@ function run_experiment_thread_schedule {
 
     # The file exists, means the experiement has run before. This check is 
     # useful when one submitted job runs out of time and require sto resubmit.
-    if [[ -f OUT_FILE ]]
+    if [[ -f "$OUT_FILE" ]]
     then
-        return 1
+        # The experiment is completed do not run
+        if [[ $(tail -1 $OUT_FILE) == $EXP_END_KEYWORD ]]
+        then
+            return 1
+        fi
+        # Experiemnt is incomplete interuptted, remove and restart
+        rm $OUT_FILE
     fi
 
     SCHEDULE_METHOD=$SCHEDULE_METHOD_STATIC
@@ -112,14 +124,14 @@ function run_experiment_thread_schedule {
 
     # Dynamic becomes very slow for some unknown reason, stop when too much 
     # computation
-    if [[ $SCHEDULE_METHOD == $SCHEDULE_METHOD_DYNAMIC && $(($1 * $2)) -ge 100000000 ]]
+    if [[ $1 -lt 5000000 ]]
     then
-        return 1
+        SCHEDULE_METHOD=$SCHEDULE_METHOD_DYNAMIC    
+        compile_program $SCHEDULE_METHOD
+        run_experiment_process $1 $2
     fi
-    
-    SCHEDULE_METHOD=$SCHEDULE_METHOD_DYNAMIC
-    compile_program $SCHEDULE_METHOD
-    run_experiment_process $1 $2
+
+    echo $EXP_END_KEYWORD >> $OUT_FILE
 }
 
 # Run all experiements by combination of fish amount and simulation steps
