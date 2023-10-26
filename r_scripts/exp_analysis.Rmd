@@ -48,7 +48,7 @@ exp_data <- read_all_data("../second_deliverable/exp_data_csv")
 ```
 
 ## Effect of simulation steps on duration
-fish_amount = 100000000, thread_num = 128 and schedule = static as it is limited as the max number of thread in a Setonix node
+fish_amount = 100000000, schedule = static and thread_num = 128 as it is limited as the max number of thread in a Setonix node
 
 ```{r fig.width=12, fig.height=8}
 df <- subset(exp_data, fish_amount == 100000000 & thread_num == 128 & 
@@ -61,10 +61,10 @@ ggplot() +
 ```
 
 ## Effect of simulation step on duration using different schedule
-fish_amount = 75000000, thread_num = 128 and schedule = static as it is limited as the max number of thread in a Setonix node
+fish_amount = 25000000, thread_num = 128 as it is limited as the max number of thread in a Setonix node
 
 ```{r fig.width=12, fig.height=8}
-df <- subset(exp_data, fish_amount == 7500000 & thread_num == 128)
+df <- subset(exp_data, fish_amount == 25000000 & thread_num == 128)
 df[, "process_num"] <- as.factor(df[, "process_num"])
 df[, "schedule"] <- as.factor(df[, "schedule"])
 ggplot() +
