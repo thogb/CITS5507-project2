@@ -1,0 +1,36 @@
+Starting all experiments
+performing experiment set: 1/32
+performing experiment set: 2/32
+performing experiment set: 3/32
+performing experiment set: 4/32
+performing experiment set: 5/32
+performing experiment set: 6/32
+performing experiment set: 7/32
+performing experiment set: 8/32
+performing experiment set: 9/32
+performing experiment set: 10/32
+performing experiment set: 11/32
+performing experiment set: 12/32
+performing experiment set: 13/32
+performing experiment set: 14/32
+performing experiment set: 15/32
+performing experiment set: 16/32
+srun: Job 4978520 step creation temporarily disabled, retrying (Requested nodes are busy)
+srun: Step created for job 4978520
+performing experiment set: 17/32
+performing experiment set: 18/32
+performing experiment set: 19/32
+performing experiment set: 20/32
+performing experiment set: 21/32
+performing experiment set: 22/32
+performing experiment set: 23/32
+performing experiment set: 24/32
+performing experiment set: 25/32
+performing experiment set: 26/32
+performing experiment set: 27/32
+performing experiment set: 28/32
+performing experiment set: 29/32
+performing experiment set: 30/32
+performing experiment set: 31/32
+performing experiment set: 32/32
+Finished all experiments
